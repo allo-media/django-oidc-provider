@@ -168,6 +168,10 @@ class DefaultSettings(object):
             'error': 'oidc_provider/error.html'
         }
 
+    @property
+    def OIDC_CORS_MANAGEMENT_ENABLE(self):
+        return True
+
 
 default_settings = DefaultSettings()
 

@@ -232,7 +232,8 @@ def userinfo(request, *args, **kwargs):
     def set_headers(response):
         response['Cache-Control'] = 'no-store'
         response['Pragma'] = 'no-cache'
-        cors_allow_any(request, response)
+        if settings.get('OIDC_CORS_MANAGEMENT_ENABLE'):
+            cors_allow_any(request, response)
         return response
 
     if request.method == 'OPTIONS':
@@ -287,7 +288,8 @@ class ProviderInfoView(View):
             dic['check_session_iframe'] = site_url + reverse('oidc_provider:check-session-iframe')
 
         response = JsonResponse(dic)
-        response['Access-Control-Allow-Origin'] = '*'
+        if settings.get('OIDC_CORS_MANAGEMENT_ENABLE'):
+            response['Access-Control-Allow-Origin'] = '*'
 
         return response
 
@@ -308,7 +310,8 @@ class JwksView(View):
             })
 
         response = JsonResponse(dic)
-        response['Access-Control-Allow-Origin'] = '*'
+        if settings.get('OIDC_CORS_MANAGEMENT_ENABLE'):
+            response['Access-Control-Allow-Origin'] = '*'
 
         return response
 
