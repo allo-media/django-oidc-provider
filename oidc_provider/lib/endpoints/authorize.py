@@ -221,9 +221,13 @@ class AuthorizeEndpoint(object):
             logger.exception('[Authorize] Error when trying to create response uri: %s', error)
             raise AuthorizeError(self.params['redirect_uri'], 'server_error', self.grant_type)
 
+        fragment = urlencode(query_fragment, doseq=True)
+        if len(uri.fragment):
+            fragment = "{}&{}".format(uri.fragment, fragment)
+
         uri = uri._replace(
             query=urlencode(query_params, doseq=True),
-            fragment=uri.fragment + urlencode(query_fragment, doseq=True))
+            fragment=fragment)
 
         return urlunsplit(uri)
 
